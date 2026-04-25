@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,9 +29,10 @@ import { getSearchSuggestions } from "../../utils/search";
 export default function Navbar({ navLinks }) {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [quickSuggestions, setQuickSuggestions] = useState([]);
   const searchRef = useRef(null);
-  const deferredSearchQuery = useDeferredValue(searchQuery);
 
   const user = useSelector((state) => state.auth.user);
   const { blogs = [], loading: researchLoading } = useSelector(
@@ -51,8 +52,26 @@ export default function Navbar({ navLinks }) {
     if (location.pathname === "/search") {
       const query = new URLSearchParams(location.search).get("q") || "";
       setSearchQuery(query);
+      setDebouncedSearchQuery(query);
     }
   }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    const trimmedQuery = searchQuery.trim();
+
+    if (!trimmedQuery) {
+      setDebouncedSearchQuery("");
+      return;
+    }
+
+    const debounceTimer = window.setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
+
+    return () => {
+      window.clearTimeout(debounceTimer);
+    };
+  }, [searchQuery]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -69,7 +88,7 @@ export default function Navbar({ navLinks }) {
   }, []);
 
   useEffect(() => {
-    const query = deferredSearchQuery.trim();
+    const query = debouncedSearchQuery.trim();
 
     if (!query) return;
 
@@ -78,11 +97,30 @@ export default function Navbar({ navLinks }) {
     if (!events.length) dispatch(fetchEvents());
   }, [
     blogs.length,
-    deferredSearchQuery,
+    debouncedSearchQuery,
     dispatch,
     events.length,
     newsList.length,
   ]);
+
+  useEffect(() => {
+    const query = debouncedSearchQuery.trim();
+
+    if (!query) {
+      setQuickSuggestions([]);
+      return;
+    }
+
+    setQuickSuggestions(
+      getSearchSuggestions({
+        query: debouncedSearchQuery,
+        blogs,
+        newsList,
+        events,
+        limit: 7,
+      })
+    );
+  }, [blogs, debouncedSearchQuery, events, newsList]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -95,16 +133,11 @@ export default function Navbar({ navLinks }) {
     navigate(`/search?q=${encodeURIComponent(query)}`);
   };
 
-  const quickSuggestions = getSearchSuggestions({
-    query: deferredSearchQuery,
-    blogs,
-    newsList,
-    events,
-    limit: 7,
-  });
+  const isDebouncing =
+    searchQuery.trim() !== debouncedSearchQuery.trim();
 
   const shouldShowSuggestions =
-    isSearchFocused && deferredSearchQuery.trim().length > 0;
+    isSearchFocused && searchQuery.trim().length > 0;
 
   const searchLoading =
     (researchLoading && blogs.length === 0) ||
@@ -308,9 +341,9 @@ export default function Navbar({ navLinks }) {
                   Suggestions
                 </div>
 
-                {searchLoading ? (
+                {searchLoading || isDebouncing ? (
                   <div className="px-4 py-6 text-sm text-slate-500">
-                    Loading suggestions...
+                    Finding suggestions...
                   </div>
                 ) : quickSuggestions.length > 0 ? (
                   <>
@@ -342,7 +375,7 @@ export default function Navbar({ navLinks }) {
                       type="submit"
                       className="w-full bg-slate-950 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-800"
                     >
-                      Show all results for "{deferredSearchQuery.trim()}"
+                      Show all results for "{searchQuery.trim()}"
                     </button>
                   </>
                 ) : (

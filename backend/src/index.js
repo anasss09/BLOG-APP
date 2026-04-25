@@ -30,7 +30,7 @@ app.use('/api/events/', eventRouter);
 app.use('/api/news/', newsRouter);
 app.use('/api/users/', userRouter);
 
-mongoose.connect("mongodb://localhost:27017/blog").then(() => {
+mongoose.connect(process.env.MONGO_URI).then(() => {
     app.listen(PORT, () => {
         console.log("MongoDB connect!!");
         console.log(`Server is running http://localhost:${PORT}`);
