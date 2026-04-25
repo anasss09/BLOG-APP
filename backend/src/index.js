@@ -14,7 +14,10 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors({
-    origin: 'https://blog-app-mauve-mu.vercel.app',
+    origin: [
+    'https://blog-app-mauve-mu.vercel.app',
+    'https://blog-app-git-main-anas-projects-a5541420.vercel.app'
+  ],
     credentials: true
 }));
 
