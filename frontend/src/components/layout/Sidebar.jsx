@@ -3,7 +3,9 @@ import { useSelector } from "react-redux"
 
 const menu = [
   { name: "Dashboard", path: "/admin", roles: ["admin","editor","member"] },
-  { name: "Posts", path: "/admin/posts", roles: ["admin","editor"] },
+  { name: "Research", path: "/admin/posts", roles: ["admin","editor"] },
+  { name: "Events", path: "/admin/events", roles: ["admin","editor"] },
+  { name: "News", path: "/admin/news", roles: ["admin","editor"] },
   { name: "Users", path: "/admin/users", roles: ["admin"] },
   { name: "Settings", path: "/admin/settings", roles: ["admin"] },
 ]

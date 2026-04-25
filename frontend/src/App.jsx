@@ -12,6 +12,8 @@ import { checkAuth } from "./features/auth/authSlice";
 import AdminLayout from "./components/layout/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Posts from "./pages/admin/Post";
+import ManageEvents from "./pages/admin/ManageEvents";
+import ManageNews from "./pages/admin/ManageNews";
 import User from "./pages/admin/User";
 import Setting from "./pages/admin/Setting";
 import { Toaster } from "sonner";
@@ -25,6 +27,11 @@ import EditorPage from "./pages/EditorPage";
 import Footer from "./components/layout/Footer";
 import ResearchCategory from "./pages/ResearchArea/ResearchCategory";
 import ResearchDetails from "./pages/ResearchArea/ResearchDetails";
+import NewsCategory from "./pages/NewsArea/NewsCategory";
+import NewsDetails from "./pages/NewsArea/NewsDetails";
+import EventCategory from "./pages/EventArea/EventCategory";
+import EventDetails from "./pages/EventArea/EventDetails";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   const { user, authLoading } = useSelector((state) => state.auth);
@@ -71,6 +78,11 @@ function App() {
           element={user ? <Research /> : <Navigate to="/login" />}
         />
 
+        <Route
+          path="/menbership"
+          element={user ? <Membership /> : <Navigate to="/login" />}
+        />
+
         {/* Dynamic category page 🔥 */}
         <Route
           path="/research/:category"
@@ -81,6 +93,26 @@ function App() {
         <Route
           path="/research/:category/:slug"
           element={user ? <ResearchDetails /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/news/:category"
+          element={user ? <NewsCategory /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/news/:category/:slug"
+          element={user ? <NewsDetails /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/events/:category"
+          element={user ? <EventCategory /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/events/:category/:slug"
+          element={user ? <EventDetails /> : <Navigate to="/login" />}
         />
 
         {/* AUTH */}
@@ -99,6 +131,11 @@ function App() {
           element={user ? <Home /> : <Navigate to="/login" />}
         />
 
+        <Route
+          path="/search"
+          element={user ? <SearchResults /> : <Navigate to="/login" />}
+        />
+
         {/* ADMIN */}
         <Route
           path="/admin"
@@ -114,6 +151,24 @@ function App() {
           element={
             user && ["admin", "editor"].includes(user.role)
               ? <AdminLayout><Posts /></AdminLayout>
+              : <Navigate to="/" />
+          }
+        />
+
+        <Route
+          path="/admin/events"
+          element={
+            user && ["admin", "editor"].includes(user.role)
+              ? <AdminLayout><ManageEvents /></AdminLayout>
+              : <Navigate to="/" />
+          }
+        />
+
+        <Route
+          path="/admin/news"
+          element={
+            user && ["admin", "editor"].includes(user.role)
+              ? <AdminLayout><ManageNews /></AdminLayout>
               : <Navigate to="/" />
           }
         />

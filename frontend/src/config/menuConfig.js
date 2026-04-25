@@ -2,35 +2,43 @@
 export const researchAreas = [
   {
     name: "Security & Geopolitics",
-    slug: "security-geopolitics"
+    slug: "security-geopolitics",
+    path: "/research/security-geopolitics"
   },
   {
     name: "Trade & Economy",
-    slug: "trade-economy"
+    slug: "trade-economy",
+    path: "/research/trade-economy"
   },
   {
     name: "AI & Emerging Technologies",
-    slug: "ai-emerging-technologies"
+    slug: "ai-emerging-technologies",
+    path: "/research/ai-emerging-technologies"
   },
   {
     name: "Climate Change & Sustainability",
-    slug: "climate-change-sustainability"
+    slug: "climate-change-sustainability",
+    path: "/research/climate-change-sustainability"
   },
   {
     name: "Energy & Infrastructure",
-    slug: "energy-infrastructure"
+    slug: "energy-infrastructure",
+    path: "/research/energy-infrastructure"
   },
   {
     name: "Civilizational Studies",
-    slug: "civilizational-studies"
+    slug: "civilizational-studies",
+    path: "/research/civilizational-studies"
   },
   {
     name: "Global Electoral Landscapes",
-    slug: "global-electoral-landscapes"
+    slug: "global-electoral-landscapes",
+    path: "/research/global-electoral-landscapes"
   },
   {
     name: "Multilateral Institutions",
-    slug: "multilateral-institutions"
+    slug: "multilateral-institutions",
+    path: "/research/multilateral-institutions"
   }
 ]
 

@@ -138,12 +138,12 @@ export const postLogin = async (req, res) => {
         return res.status(200)
         .cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         }).cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         }).json({
             success: true,
             message: `Login Successfully`,
@@ -177,13 +177,13 @@ export const getLogout = async (req, res) => {
         return res.status(200)
             .clearCookie("refreshToken", {
                 httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                secure: process.env.NODE_ENV === "production",
+                sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             })
             .clearCookie("accessToken", {
                 httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                secure: process.env.NODE_ENV === "production",
+                sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             })
             .json({
                 success: true,

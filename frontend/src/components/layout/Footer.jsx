@@ -1,185 +1,140 @@
-import { Link } from "react-router-dom"
-import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  ChevronUp
-} from "lucide-react"
+import { Link } from "react-router-dom";
+import { ArrowUpRight, ChevronUp } from "lucide-react";
 
-import {
-  researchAreas,
-  regions,
-  publications,
-  events
-} from "../../config/menuConfig"
+import { researchAreas } from "../../config/menuConfig";
+
+const quickLinks = [
+  { name: "Home", path: "/" },
+  { name: "Research", path: "/research" },
+  { name: "News", path: "/news" },
+  { name: "Events", path: "/events" },
+  { name: "Membership", path: "/membership" },
+  { name: "About", path: "/about" },
+  { name: "Search", path: "/search" },
+];
+
+const newsLinks = [
+  { name: "General", path: "/news/general" },
+  { name: "Press Release", path: "/news/press-release" },
+  { name: "Announcement", path: "/news/announcement" },
+  { name: "Company", path: "/news/company" },
+];
+
+const eventLinks = [
+  { name: "Conclave", path: "/events/conclave" },
+  { name: "Conference", path: "/events/conference" },
+  { name: "Workshop", path: "/events/workshop" },
+  { name: "Roundtable", path: "/events/roundtable" },
+  { name: "Track-II Dialogue", path: "/events/track-ii" },
+];
 
 export default function Footer() {
-
   const scrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-100 text-gray-700 pt-14 pb-6">
-
-      <div className="max-w-7xl mx-auto px-6">
-
-        {/* GRID */}
-        <div className="grid md:grid-cols-5 gap-12">
-
-          {/* LEFT SECTION */}
+    <footer className="border-t bg-slate-950 text-slate-200">
+      <div className="max-w-7xl mx-auto px-6 py-14">
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1fr]">
           <div className="space-y-6">
+            <div>
+              <Link to="/" className="text-3xl font-semibold leading-tight text-white">
+                MYBLOG
+                <br />
+                FOUNDATION
+              </Link>
+              <p className="mt-4 max-w-sm text-sm leading-7 text-slate-400">
+                Independent research, timely news, and public events in one place.
+                The footer now only keeps routes that actually work inside the app.
+              </p>
+            </div>
 
-            <h2 className="text-3xl font-semibold leading-snug text-gray-900">
-              MYBLOG <br /> FOUNDATION
-            </h2>
-
-            <p className="leading-relaxed text-gray-600">
-              An independent policy research institution advancing informed
-              dialogue on global and regional affairs.
-            </p>
-
-            {/* SOCIAL */}
-            <div className="flex items-center gap-4">
-
-              <span className="font-semibold text-gray-800">
-                FOLLOW US:
-              </span>
-
-              <a href="#" className="hover:text-blue-600">
-                <Facebook size={18}/>
-              </a>
-
-              <a href="#" className="hover:text-blue-600">
-                <Twitter size={18}/>
-              </a>
-
-              <a href="#" className="hover:text-blue-600">
-                <Instagram size={18}/>
-              </a>
-
-              <a href="#" className="hover:text-blue-600">
-                <Youtube size={18}/>
-              </a>
-
+            <div className="flex flex-wrap gap-3">
+              <Link
+                to="/membership"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-slate-200"
+              >
+                Become a Member
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/search"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+              >
+                Search Content
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
 
-
-          {/* RESEARCH AREAS */}
           <div>
-            <h3 className="text-xl font-semibold mb-5 text-gray-900">
-              Research Areas
-            </h3>
-
-            <ul className="space-y-3 text-gray-600">
-
-              {researchAreas.map((item, i) => (
-                <li key={i}>
-                  <Link
-                    to={item.path}
-                    className="no-underline hover:text-blue-600"
-                  >
+            <h3 className="mb-5 text-lg font-semibold text-white">Quick Links</h3>
+            <ul className="space-y-3 text-sm text-slate-400">
+              {quickLinks.map((item) => (
+                <li key={item.path}>
+                  <Link to={item.path} className="transition hover:text-white">
                     {item.name}
                   </Link>
                 </li>
               ))}
-
             </ul>
           </div>
 
-
-          {/* REGIONS */}
           <div>
-            <h3 className="text-xl font-semibold mb-5 text-gray-900">
-              Regions
-            </h3>
-
-            <ul className="space-y-3 text-gray-600">
-
-              {regions.map((item, i) => (
-                <li key={i}>
-                  <Link
-                    to={item.path}
-                    className="no-underline hover:text-blue-600"
-                  >
+            <h3 className="mb-5 text-lg font-semibold text-white">Research Areas</h3>
+            <ul className="space-y-3 text-sm text-slate-400">
+              {researchAreas.map((item) => (
+                <li key={item.slug}>
+                  <Link to={item.path} className="transition hover:text-white">
                     {item.name}
                   </Link>
                 </li>
               ))}
-
             </ul>
           </div>
 
-
-          {/* PUBLICATIONS */}
           <div>
-            <h3 className="text-xl font-semibold mb-5 text-gray-900">
-              Publications
-            </h3>
-
-            <ul className="space-y-3 text-gray-600">
-
-              {publications.map((item, i) => (
-                <li key={i}>
-                  <Link
-                    to={item.path}
-                    className="no-underline hover:text-blue-600"
-                  >
+            <h3 className="mb-5 text-lg font-semibold text-white">News</h3>
+            <ul className="space-y-3 text-sm text-slate-400">
+              {newsLinks.map((item) => (
+                <li key={item.path}>
+                  <Link to={item.path} className="transition hover:text-white">
                     {item.name}
                   </Link>
                 </li>
               ))}
-
             </ul>
           </div>
 
-
-          {/* EVENTS */}
           <div>
-            <h3 className="text-xl font-semibold mb-5 text-gray-900">
-              Events
-            </h3>
-
-            <ul className="space-y-3 text-gray-600">
-
-              {events.map((item, i) => (
-                <li key={i}>
-                  <Link
-                    to={item.path}
-                    className="no-underline hover:text-blue-600"
-                  >
+            <h3 className="mb-5 text-lg font-semibold text-white">Events</h3>
+            <ul className="space-y-3 text-sm text-slate-400">
+              {eventLinks.map((item) => (
+                <li key={item.path}>
+                  <Link to={item.path} className="transition hover:text-white">
                     {item.name}
                   </Link>
                 </li>
               ))}
-
             </ul>
           </div>
-
         </div>
 
-
-        {/* BOTTOM */}
-        <div className="border-t border-gray-300 mt-12 pt-6 flex items-center justify-between">
-
-          <p className="mx-auto text-sm text-gray-600">
-            © 2025, MyBlog Foundation
-          </p>
+        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
+          <p>© {currentYear} MyBlog Foundation. All footer links are live routes.</p>
 
           <button
             onClick={scrollTop}
-            className="flex items-center gap-1 text-sm hover:text-blue-600"
+            className="inline-flex items-center gap-1 transition hover:text-white"
           >
-            <ChevronUp size={16}/>
-            Top
+            <ChevronUp size={16} />
+            Back to top
           </button>
-
         </div>
-
       </div>
-
     </footer>
-  )
+  );
 }

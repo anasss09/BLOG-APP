@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -38,6 +38,7 @@ export default function Posts() {
 
   const navigate = useNavigate()
   const location = useLocation()
+  const handledRef = useRef(false);
 
   // Fetch blogs on component mount
   useEffect(() => {
@@ -53,21 +54,38 @@ export default function Posts() {
 
   // Decription
   useEffect(() => {
+    if (
+      location.state?.returnPath === "/admin/posts" &&
+      location.state?.description !== undefined &&
+      !handledRef.current
+    ) {
+      handledRef.current = true;
 
-    if (location.state?.description) {
+      const snap = location.state.formSnapshot || {};
 
-      setFormData(prev => ({
-        ...prev,
-        description: location.state.description
-      }))
+      setFormData({
+        ...snap,
+        description: location.state.description,
+        image: null
+      });
 
-      setOpen(true) // dialog reopen
+      setIsEditMode(location.state.isEditMode || false);
 
-      navigate("/admin/posts", { replace: true }) // clear state
+      if (location.state.isEditMode && location.state.currentPostId) {
+        const found = blogs.find(e => e._id === location.state.currentPostId);
+        if (found) setCurrentPost(found);
+      }
 
+      setOpen(true);
+      navigate("/admin/posts", { replace: true, state: {} });
     }
+  }, [location.state, navigate, blogs]);
 
-  }, [location.state])
+  useEffect(() => {
+    if (!location.state?.returnPath) {
+      handledRef.current = false;
+    }
+  }, [location.state]);
 
   // Helper function to safely extract author name
   const getAuthorName = (author) => {
@@ -107,7 +125,8 @@ export default function Posts() {
       title: '',
       description: '',
       category: '',
-      image: null
+      image: null,
+      featured: false
     });
     setUploadProgress(0);
     setOpen(true);
@@ -299,7 +318,13 @@ export default function Posts() {
                 <div
                   onClick={() =>
                     navigate("/editor", {
-                      state: { description: formData.description }
+                      state: {
+                        description: formData.description,
+                        returnPath: "/admin/posts",
+                        formSnapshot: { ...formData, image: null },
+                        isEditMode,
+                        currentPostId: currentPost?._id
+                      }
                     })
                   }
                   className="border p-4 rounded cursor-pointer bg-gray-50 hover:bg-gray-100"

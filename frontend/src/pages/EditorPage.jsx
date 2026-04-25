@@ -7,15 +7,18 @@ export default function EditorPage() {
 
     const navigate = useNavigate()
     const location = useLocation()
-
     const [content, setContent] = useState(location.state?.description || "")
 
+    // Read the returnPath passed by the caller, fallback to /admin/posts
+    const returnPath = location.state?.returnPath || location.state?.backTo || "/admin/posts"
+
     const handleSave = () => {
-
-        navigate("/admin/posts", {
-            state: { description: content }
+        navigate(returnPath, {
+        state: { 
+            ...location.state,
+            description: content 
+        }
         })
-
     }
 
     return (

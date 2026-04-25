@@ -23,10 +23,7 @@ export const createResearch = createAsyncThunk('/research/create', async (formDa
 
 export const updateResearch = createAsyncThunk('/research/update', async ({ id, formData }, thunkAPI) => {
     try {
-        const res = await axios.patch(`/research/${id}`, formData,
-            {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+        const res = await axios.patch(`/research/${id}`, formData);
         return res.data.blogs;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response?.data || error.message);

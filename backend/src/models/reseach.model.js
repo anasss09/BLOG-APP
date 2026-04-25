@@ -23,11 +23,8 @@ const researchSchema = new Schema({
     },
 
     image: {
-        type: {
-            url: { type: String, required: true },
-            public_id: { type: String, required: true }
-        },
-        required: true
+        url: { type: String, required: true },
+        public_id: { type: String, required: true }
     },
 
     category: {
@@ -79,7 +76,7 @@ const researchSchema = new Schema({
 });
 
 // 🔥 AUTO SLUG + READ TIME
-researchSchema.pre("save", function (next) {
+researchSchema.pre("save", async function () {
 
     // slug generate
     if (!this.slug) {
@@ -98,8 +95,6 @@ researchSchema.pre("save", function (next) {
 
         this.readTime = `${minutes} min read`;
     }
-
-    next();
 });
 
 //Prevent duplicate blog titles per author
