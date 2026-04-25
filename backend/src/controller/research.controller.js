@@ -144,7 +144,7 @@ export const postCreate = async (req, res, next) => {
         let imageData;
 
         if (req?.file) {
-            uploadedPath = req.file.path;
+            uploadedPath = req?.file?.path;
 
             const uploadResponse = await cloudinary.uploader.upload(uploadedPath);
 
