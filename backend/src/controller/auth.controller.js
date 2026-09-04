@@ -139,13 +139,13 @@ export const postLogin = async (req, res) => {
         .cookie("refreshToken", refreshToken, {
             httpOnly: true,
             // secure: false,
-            // sameSite: 'lax',
+            // sameSite: "lax",
             secure: true,
             sameSite: 'none'
         }).cookie("accessToken", accessToken, {
             httpOnly: true,
             // secure: false,
-            // sameSite: 'lax',
+            // sameSite: "lax",
             secure: true,
             sameSite: 'none'
         }).json({
